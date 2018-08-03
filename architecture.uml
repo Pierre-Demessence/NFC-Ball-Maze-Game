@@ -1,0 +1,27 @@
+@startuml
+
+title Classes - Class Diagram
+
+class MazeGenerator
+
+package Maze <<Rectangle>> {
+    class Maze << (M,cyan) Monobehavior >>
+    class Controller << (M,cyan) Monobehavior >>
+    class Rigidbody << (M,cyan) Monobehavior >> {
+        IsKinematic = true
+        FreezeRotationY = true
+    }
+}
+
+package Camera <<Rectangle>> {
+    class Camera << (M,cyan) Monobehavior >>
+}
+
+package Ball <<Rectangle>> {
+    class Ball << (M,cyan) Monobehavior >>
+    class SphereCollider << (M,cyan) Monobehavior >>
+    class PhysicMaterial << (M,cyan) Monobehavior >>
+    SphereCollider *-down- PhysicMaterial
+}
+
+@enduml
