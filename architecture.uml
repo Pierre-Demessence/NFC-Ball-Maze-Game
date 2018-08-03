@@ -7,20 +7,20 @@ class MazeGenerator
 package Maze <<Rectangle>> {
     class Maze << (M,cyan) Monobehavior >>
     class Controller << (M,cyan) Monobehavior >>
-    class Rigidbody << (M,cyan) Monobehavior >> {
+    class Rigidbody << (C,lime) Component >> {
         IsKinematic = true
         FreezeRotationY = true
     }
 }
 
 package Camera <<Rectangle>> {
-    class Camera << (M,cyan) Monobehavior >>
+    class Camera << (C,lime) Component >>
 }
 
 package Ball <<Rectangle>> {
     class Ball << (M,cyan) Monobehavior >>
-    class SphereCollider << (M,cyan) Monobehavior >>
-    class PhysicMaterial << (M,cyan) Monobehavior >>
+    class SphereCollider << (C,lime) Component >>
+    class PhysicMaterial << (C,lime) Component >>
     SphereCollider *-down- PhysicMaterial
 }
 
