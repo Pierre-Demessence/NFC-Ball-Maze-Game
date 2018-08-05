@@ -34,3 +34,11 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+\.idea/\.idea\.NFC-BallMaze/\.idea/
+
+\.idea/\.idea\.NFC-BallMaze/
+
+Assets/Plugins/Editor/JetBrains/
+
+Assets/Plugins/Editor/JetBrains\.meta
