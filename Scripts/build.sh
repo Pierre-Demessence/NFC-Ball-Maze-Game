@@ -7,6 +7,7 @@ echo "Attempting to build $project for Windows"
   -batchmode 
   -nographics 
   -silent-crashes 
+  -logFile 
   -projectPath $(pwd) 
   -buildWindowsPlayer "$(pwd)/Build/windows/$project.exe" 
   -quit
@@ -16,6 +17,7 @@ echo "Attempting to build $project for Windows"
 #  -batchmode 
 #  -nographics 
 #  -silent-crashes 
+#  -logFile
 #  -projectPath $(pwd) 
 #  -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" 
 #  -quit
@@ -25,6 +27,7 @@ echo "Attempting to build $project for Windows"
 #  -batchmode 
 #  -nographics 
 #  -silent-crashes 
+#  -logFile
 #  -projectPath $(pwd) 
 #  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project.exe" 
 #  -quit
