@@ -2,6 +2,7 @@
 
 project="NFC-Ball-Maze-Game"
 
+touch $(pwd)/unity.log
 echo "Attempting to build $project for Windows"
 tail -F $(pwd)/unity.log & /Applications/Unity/Unity.app/Contents/MacOS/Unity 
   -batchmode 
@@ -13,6 +14,7 @@ tail -F $(pwd)/unity.log & /Applications/Unity/Unity.app/Contents/MacOS/Unity
   -quit
 kill %1
 
+#touch $(pwd)/unity.log
 #echo "Attempting to build $project for OS X"
 #/Applications/Unity/Unity.app/Contents/MacOS/Unity 
 #  -batchmode 
@@ -24,6 +26,7 @@ kill %1
 #  -quit
 #kill %1
 
+#touch $(pwd)/unity.log
 #echo "Attempting to build $project for Linux"
 #/Applications/Unity/Unity.app/Contents/MacOS/Unity 
 #  -batchmode 
