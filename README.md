@@ -1,3 +1,5 @@
 # NFC-Ball-Maze-Game
 
 [![Build Status](https://travis-ci.org/Pierre-Demessence/NFC-Ball-Maze-Game.svg?branch=develop)](https://travis-ci.org/Pierre-Demessence/NFC-Ball-Maze-Game)
+
+[![UML Diagram](https://www.planttext.com/plantuml/svg/ZLB1QiCm3BtxAtHSH_C7NIZBs1WZCBBJZgeZ4ZFR2hQwaOx--zoi9A6KK9riFxqdlOUtKJ38tbcbn8WbA2p6I16o_nCy6Mm2EgNqS2tnG2_aAQ1mKAf3_OKD3S-msLIa1NrZAS_XLq6gYPLWk2lNkaU_Wf8zxwZ5RyC1ydpMMh2NmDPIk95GcSRKEwxxeRzOM-DebMHSnvwymBZAgLxZc_7aK8o61v2mfn5w3aG7gbWIoFvp3X_LSR9Qe4lk5yoE3TUtcMizehKBIcVubXG-kfO25IauKv-ZkpfyOhotVJIwHA5Wq2upBjJlivf_V7OXSJAs9L-dp_G7)](https://www.planttext.com/?text=ZLB1QiCm3BtxAtHSH_C7NIZBs1WZCBBJZgeZ4ZFR2hQwaOx--zoi9A6KK9riFxqdlOUtKJ38tbcbn8WbA2p6I16o_nCy6Mm2EgNqS2tnG2_aAQ1mKAf3_OKD3S-msLIa1NrZAS_XLq6gYPLWk2lNkaU_Wf8zxwZ5RyC1ydpMMh2NmDPIk95GcSRKEwxxeRzOM-DebMHSnvwymBZAgLxZc_7aK8o61v2mfn5w3aG7gbWIoFvp3X_LSR9Qe4lk5yoE3TUtcMizehKBIcVubXG-kfO25IauKv-ZkpfyOhotVJIwHA5Wq2upBjJlivf_V7OXSJAs9L-dp_G7)
