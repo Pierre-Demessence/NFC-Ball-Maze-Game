@@ -10,6 +10,8 @@ echo "Attempting to build $project for Windows"
 	-logFile \
 	-projectPath $(pwd) \
 	-buildWindowsPlayer "$(pwd)/Build/windows/$project.exe" \
+	-username $USERNAME \
+	-password $PASSWORD \
 	-quit
 
 #echo "Attempting to build $project for OS X"
