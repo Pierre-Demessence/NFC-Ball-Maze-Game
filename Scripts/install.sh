@@ -1,8 +1,8 @@
 #! /bin/sh
 
 BASE_URL=https://netstorage.unity3d.com/unity
-HASH=46dda1414e51
-VERSION=2017.2.0f3
+HASH=5ab7f4878ef1
+VERSION=2017.4.8f1
 
 download() {
   file=$1
