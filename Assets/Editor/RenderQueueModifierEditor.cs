@@ -41,8 +41,7 @@ public class RenderQueueModifierEditor : Editor
     private void UpdateRenderQueue(GameObject gameObject)
     {
         var renderer = gameObject.GetComponent<Renderer>();
-        var material = new Material(renderer.sharedMaterial);
-        material.renderQueue = (int)RenderQueue.Geometry + _modifier.intValue;
-        renderer.sharedMaterial = material;
+        if(renderer.sharedMaterial != null)
+            renderer.sharedMaterial = new Material(renderer.sharedMaterial) {renderQueue = (int) RenderQueue.Geometry + _modifier.intValue};;
     }
 }
