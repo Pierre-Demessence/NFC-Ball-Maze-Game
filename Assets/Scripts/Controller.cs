@@ -31,7 +31,9 @@ public class Controller : MonoBehaviour
     private void UpdateInput()
     {
 #if UNITY_ANDROID || UNITY_IOS
-        _rotation = GyroToUnity(Input.gyro.attitude).eulerAngles;
+        _rotation = Vector3.zero;
+        _rotation.x = Input.acceleration.y * _maxAngle;
+        _rotation.z = -Input.acceleration.x * _maxAngle;
 #else
         _rotation.x = Input.GetAxis("Vertical") * _maxAngle;
         _rotation.z = -Input.GetAxis("Horizontal") * _maxAngle; // Flip for intuitive rotation
