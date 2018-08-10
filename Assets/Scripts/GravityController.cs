@@ -80,7 +80,8 @@ public class GravityController : MonoBehaviour
     private float ThresholdClamp(float angle)
     {
         if (angle >= 180f) angle -= 360f;
-        return Mathf.Abs(angle) > _threshold ? Mathf.Clamp(angle + _maxAngle, 0, _maxAngle * 2) - _maxAngle : 0;
+        return Mathf.Abs(angle) >= _threshold ? angle > _maxAngle ? _maxAngle : angle < -_maxAngle ? -_maxAngle : angle : angle;
+        //return Mathf.Abs(angle) > _threshold ? Mathf.Clamp(angle + _maxAngle, 0, _maxAngle * 2) - _maxAngle : 0;
     }
 
 }
