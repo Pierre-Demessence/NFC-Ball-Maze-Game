@@ -1,20 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour {
+public class MainMenu : MonoBehaviour
+{
 
-	public void Play()
+	[SerializeField] private GameObject _mainMenuPanel;
+	[SerializeField] private GameObject _settingsPanel;
+
+	private void Start()
+	{
+		_settingsPanel.SetActive(false);
+		_mainMenuPanel.SetActive(true);
+	}
+
+	public void MenuGoPlay()
 	{
 		SceneManager.LoadScene("Game");
 	}
 
-	public void Settings()
+	public void MenuGoSettings()
 	{
-		SceneManager.LoadScene("Settings");
+		_settingsPanel.SetActive(true);
+		_mainMenuPanel.SetActive(false);
 	}
 
-	public void Quit()
+	public void MenuQuit()
 	{
 		Application.Quit();	
+	}
+
+	public void SettingsGoMenu()
+	{
+		_mainMenuPanel.SetActive(true);
+		_settingsPanel.SetActive(false);
 	}
 }
