@@ -1,11 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-
+	private static float _globalVolume = 1f;
+	private static float _musicVolume = 1f;
+	private static float _soundVolume = 1f;
+	
 	[SerializeField] private GameObject _mainMenuPanel;
 	[SerializeField] private GameObject _settingsPanel;
+	
+	public static float MusicVolume => _musicVolume * _globalVolume;
+	public static float SoundVolume => _soundVolume * _globalVolume;
+	
+	[SerializeField] private AudioSource _music;
 
 	private void Start()
 	{
@@ -33,5 +42,22 @@ public class MainMenu : MonoBehaviour
 	{
 		_mainMenuPanel.SetActive(true);
 		_settingsPanel.SetActive(false);
+	}
+
+	public void SettingsGlobalVolumeChanged(float value)
+	{
+		_globalVolume = value;
+		_music.volume = MusicVolume;
+	}
+	
+	public void SettingsMusicVolumeChanged(float value)
+	{
+		_musicVolume = value;
+		_music.volume = MusicVolume;
+	}
+	
+	public void SettingsSoundVolumeChanged(float value)
+	{
+		_soundVolume = value;
 	}
 }
