@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 	private static float _globalVolume = 1f;
-	private static float _musicVolume = 1f;
+	private static float _musicVolume = 0.5f;
 	private static float _soundVolume = 1f;
 	
 	[SerializeField] private GameObject _mainMenuPanel;
@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour
 	{
 		_settingsPanel.SetActive(false);
 		_mainMenuPanel.SetActive(true);
+		_music.volume = MusicVolume;
 	}
 
 	public void MenuGoPlay()
