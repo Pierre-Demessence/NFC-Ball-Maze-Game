@@ -9,8 +9,8 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	private void Update () {
-		Debug.Log(_rBody.maxAngularVelocity);
-		Debug.Log(_rBody.velocity.magnitude);
+		//Debug.Log(_rBody.maxAngularVelocity);
+		//Debug.Log(_rBody.velocity.magnitude);
 		float factor = _rBody.velocity.magnitude / _rBody.maxAngularVelocity;
 		_aSource.pitch = factor / pFactor;
 		_aSource.volume = factor / vFactor;

@@ -39,7 +39,7 @@ public class Controller : MonoBehaviour
     {
 #if UNITY_ANDROID || UNITY_IOS
         Vector3 filteredAcceleration = LowPassFilterAccelerometer(Input.acceleration);
-        Debug.Log($"Acceleration ({Input.acceleration}) ; Filtered Acceleration ({filteredAcceleration})");
+        // Debug.Log($"Acceleration ({Input.acceleration}) ; Filtered Acceleration ({filteredAcceleration})");
         _rotation = Vector3.zero;
         _rotation.x = filteredAcceleration.y * _maxAngle;
         _rotation.z = -filteredAcceleration.x * _maxAngle;
