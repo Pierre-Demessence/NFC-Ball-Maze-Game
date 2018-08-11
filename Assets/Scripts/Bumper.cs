@@ -16,8 +16,9 @@ public class Bumper : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        Vector2 force = transform.position - collision.gameObject.transform.position;
+        Vector3 force = transform.position - collision.gameObject.transform.position;
         force *= -BumperForce;
+        force.y = 0;
         collision.gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
         Debug.Log("Bump, " + collision.gameObject.name + ", " + force);
     }
