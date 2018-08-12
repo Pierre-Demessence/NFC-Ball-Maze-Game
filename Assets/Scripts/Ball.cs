@@ -21,7 +21,7 @@ public class Ball : MonoBehaviour {
 		//Debug.Log(_rBody.velocity.magnitude);
 		float factor = _rBody.velocity.magnitude / _rBody.maxAngularVelocity;
 		_sfxRolling.pitch = factor / _sfxRollingPitchFactor;
-		_sfxRolling.volume = factor / _sfxRollingVolumeFactor;
+		_sfxRolling.volume = factor / _sfxRollingVolumeFactor * MainMenu.SoundVolume;
 	}
 
 	private void OnCollisionEnter(Collision other)
@@ -31,7 +31,7 @@ public class Ball : MonoBehaviour {
 		{
 			float factor = other.impulse.magnitude / 5;
 			_sfxColliding.pitch = Mathf.Lerp(_sfxCollidingPitchMin, _sfxCollidingPitchMax, factor);
-			_sfxColliding.volume = Mathf.Lerp(_sfxCollidingVolumeMin, _sfxCollidingVolumeMax, factor);
+			_sfxColliding.volume = Mathf.Lerp(_sfxCollidingVolumeMin, _sfxCollidingVolumeMax, factor) * MainMenu.SoundVolume;
 			_sfxColliding.Play();
 		}
 	}
