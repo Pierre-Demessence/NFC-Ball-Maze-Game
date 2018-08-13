@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4331822469434630, guid: 1d53e8ef7f08ce941b97373ffc4493d5, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 23924500448592594, guid: 1d53e8ef7f08ce941b97373ffc4493d5,
         type: 2}
@@ -290,7 +290,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 94b8a6d7bb799dd46956e6bc24ed6dc3, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94b8a6d7bb799dd46956e6bc24ed6dc3, type: 3}
@@ -335,7 +335,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1166725146 stripped
 GameObject:
@@ -417,7 +417,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4232558987979680, guid: e4744d097cf4c514b979fcfe51d7c52e, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 23512176475061562, guid: e4744d097cf4c514b979fcfe51d7c52e,
         type: 2}
@@ -511,7 +511,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1720228222
 Prefab:
@@ -550,7 +550,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4057084162605168, guid: 8be0715b4cf987440a02fbe7b2d461bc, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 23948746993515956, guid: 8be0715b4cf987440a02fbe7b2d461bc,
         type: 2}
@@ -664,7 +664,6 @@ GameObject:
   - component: {fileID: 1826755894}
   - component: {fileID: 1826755893}
   - component: {fileID: 1826755896}
-  - component: {fileID: 1826755897}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -730,7 +729,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1826755896
 MonoBehaviour:
@@ -747,14 +746,6 @@ MonoBehaviour:
   _tiltFactor: 0.5
   _target: {fileID: 1240360726}
   _baseOffset: {x: 0, y: 5, z: 0}
---- !u!45 &1826755897
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1826755892}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: 35002a85c5ee9d3419872fe6b4b4b4fd, type: 2}
 --- !u!21 &2044942992
 Material:
   serializedVersion: 6
