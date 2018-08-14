@@ -481,7 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _music: {fileID: 1373779587}
-  _ballRollingSound: {fileID: 0}
+  _ballRollingSound: {fileID: 1792210230}
   _panelPause: {fileID: 1553059305}
   _panelWin: {fileID: 1353266617}
   _buttonPause: {fileID: 258911411}
@@ -3301,6 +3301,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8be0715b4cf987440a02fbe7b2d461bc, type: 2}
   m_IsPrefabAsset: 0
+--- !u!82 &1792210230 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 82452001645765998, guid: 8be0715b4cf987440a02fbe7b2d461bc,
+    type: 2}
+  m_PrefabInternal: {fileID: 1792210229}
 --- !u!1 &1812164540
 GameObject:
   m_ObjectHideFlags: 0
