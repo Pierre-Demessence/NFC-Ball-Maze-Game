@@ -52,7 +52,7 @@ public class Gyro : MonoBehaviour
         _pureTilt = Quaternion.Inverse(_gyroNeutral) * _attitude;
         Vector3 euler = _pureTilt.eulerAngles;
 #else
-        Vector3 euler = (Quaternion.Inverse(_gyroNeutral) * _attitude).eulerAngles; // In full builds, we don't need all those variables, just get the value directly
+        Vector3 euler = (Quaternion.Inverse(_gyroNeutral) * Input.gyro.attitude).eulerAngles; // In full builds, we don't need all those variables, just get the value directly
 #endif
         Tilt = Quaternion.Euler(ThresholdAngle(euler.x), ThresholdAngle(euler.z), ThresholdAngle(euler.y)); // Not a typo, need to reinterpret gyroscope
         TiltGravity();
