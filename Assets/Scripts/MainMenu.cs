@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class MainMenu : MonoBehaviour
 	
 	[SerializeField] private GameObject _mainMenuPanel;
 	[SerializeField] private GameObject _settingsPanel;
+	
+	[SerializeField] private Slider _sliderVolumeGlobal;
+	[SerializeField] private Slider _sliderVolumeMusic;
+	[SerializeField] private Slider _sliderVolumeSound;
 	
 	public static float MusicVolume => _musicVolume * _globalVolume;
 	public static float SoundVolume => _soundVolume * _globalVolume;
@@ -21,6 +26,9 @@ public class MainMenu : MonoBehaviour
 		_settingsPanel.SetActive(false);
 		_mainMenuPanel.SetActive(true);
 		_music.volume = MusicVolume;
+		_sliderVolumeGlobal.value = _globalVolume;
+		_sliderVolumeMusic.value = _musicVolume;
+		_sliderVolumeSound.value = _soundVolume;
 	}
 
 	public void MenuGoPlay()
