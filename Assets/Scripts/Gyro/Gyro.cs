@@ -23,32 +23,38 @@ public class Gyro : MonoBehaviour
     private Quaternion _pureTilt;
     private Quaternion _attitude;
     private GUIStyle _style;
+
+    public static Quaternion VirtualTilt { get; set; }
+    public static event Action OnStart;
 #endif
     
-    private void Awake()
+    private IEnumerator Start()
     {
-        Input.gyro.enabled = true;
+        if (SystemInfo.supportsGyroscope)
+        {
+            Input.gyro.enabled = true;
+            if (Input.gyro.attitude == Zero)
+                yield return new WaitUntil(() => Input.gyro.attitude != Zero);
+
+            _gyroNeutral = Input.gyro.attitude;
+        }
+#if UNITY_EDITOR
+        // Original wait for non-zero isn't working here, alternative cheap hack
+        OnStart?.Invoke();
+        _gyroNeutral = VirtualTilt;
+#endif
+        _gravityNeutral = Physics.gravity;
         
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         _style = new GUIStyle() {fontSize = 48};
 #endif
-    }
-    
-    private IEnumerator Start()
-    {
-        // Sometimes, the gyroscope input doesn't start up right away and attitude will return Zero, an invalid quaternion
-        // In these cases, just wait until it returns a valid quat. This never takes more than a few frames.
-        if (Input.gyro.attitude == Zero)
-            yield return new WaitUntil(() => Input.gyro.attitude != Zero);
-        _gyroNeutral = Input.gyro.attitude;
-        _gravityNeutral = Physics.gravity;
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        _attitude = Input.gyro.attitude;
+        _attitude = SystemInfo.supportsGyroscope ? Input.gyro.attitude : VirtualTilt != Zero ? VirtualTilt : Quaternion.identity;
         _pureTilt = Quaternion.Inverse(_gyroNeutral) * _attitude;
         Vector3 euler = _pureTilt.eulerAngles;
 #else
@@ -83,10 +89,15 @@ public class Gyro : MonoBehaviour
 
     public void ResetGyro()
     {
+        
         Input.gyro.enabled = true; // Might be unnecessary
         _gyroNeutral = Input.gyro.attitude;
         Physics.gravity = _gravityNeutral;
 
+#if UNITY_EDITOR
+        _gyroNeutral = SystemInfo.supportsGyroscope ? Input.gyro.attitude : VirtualTilt != Zero ? VirtualTilt : Quaternion.identity;
+#endif
+        
         OnGyroReset?.Invoke();
     }
 
