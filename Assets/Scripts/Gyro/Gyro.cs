@@ -16,8 +16,6 @@ public class Gyro : MonoBehaviour
     public static event Action OnGyroReset;
     
     public static Quaternion Tilt { get; private set; }
-    
-    private static readonly Quaternion Zero = new Quaternion(0, 0, 0, 0);
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     private Quaternion _pureTilt;
@@ -25,7 +23,6 @@ public class Gyro : MonoBehaviour
     private GUIStyle _style;
 
     public static Quaternion VirtualTilt { get; set; }
-    public static event Action OnStart;
 #endif
     
     private IEnumerator Start()
@@ -33,14 +30,32 @@ public class Gyro : MonoBehaviour
         if (SystemInfo.supportsGyroscope)
         {
             Input.gyro.enabled = true;
-            if (Input.gyro.attitude == Zero)
-                yield return new WaitUntil(() => Input.gyro.attitude != Zero);
+            // Sometimes, the gyroscope isn't ready and returns a bad quaternion.
+            // Unity checks the dot product for equality, we need to check each component
+            // Could probably do a straight check for zero given the nature of the bug
+            // This should never be waiting for more than a few frames
+            // There's a lot to say about these two lines, isn't there
+            if (Math.Abs(Input.gyro.attitude.w) < Mathf.Epsilon && 
+                Math.Abs(Input.gyro.attitude.x) < Mathf.Epsilon && 
+                Math.Abs(Input.gyro.attitude.y) < Mathf.Epsilon &&
+                Math.Abs(Input.gyro.attitude.z) < Mathf.Epsilon)
+                yield return new WaitUntil(() => Math.Abs(Input.gyro.attitude.w) < Mathf.Epsilon && 
+                                                 Math.Abs(Input.gyro.attitude.x) < Mathf.Epsilon && 
+                                                 Math.Abs(Input.gyro.attitude.y) < Mathf.Epsilon &&
+                                                 Math.Abs(Input.gyro.attitude.z) < Mathf.Epsilon);
 
             _gyroNeutral = Input.gyro.attitude;
         }
 #if UNITY_EDITOR
-        // Original wait for non-zero isn't working here, alternative cheap hack
-        OnStart?.Invoke();
+        if (Math.Abs(VirtualTilt.w) < Mathf.Epsilon && 
+            Math.Abs(VirtualTilt.x) < Mathf.Epsilon && 
+            Math.Abs(VirtualTilt.y) < Mathf.Epsilon &&
+            Math.Abs(VirtualTilt.z) < Mathf.Epsilon)
+            yield return new WaitUntil(() => Math.Abs(VirtualTilt.w) < Mathf.Epsilon && 
+                                             Math.Abs(VirtualTilt.x) < Mathf.Epsilon && 
+                                             Math.Abs(VirtualTilt.y) < Mathf.Epsilon &&
+                                             Math.Abs(VirtualTilt.z) < Mathf.Epsilon);
+        
         _gyroNeutral = VirtualTilt;
 #endif
         _gravityNeutral = Physics.gravity;
@@ -54,7 +69,7 @@ public class Gyro : MonoBehaviour
     private void FixedUpdate()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        _attitude = SystemInfo.supportsGyroscope ? Input.gyro.attitude : VirtualTilt != Zero ? VirtualTilt : Quaternion.identity;
+        _attitude = SystemInfo.supportsGyroscope ? Input.gyro.attitude : VirtualTilt;
         _pureTilt = Quaternion.Inverse(_gyroNeutral) * _attitude;
         Vector3 euler = _pureTilt.eulerAngles;
 #else
@@ -95,7 +110,7 @@ public class Gyro : MonoBehaviour
         Physics.gravity = _gravityNeutral;
 
 #if UNITY_EDITOR
-        _gyroNeutral = SystemInfo.supportsGyroscope ? Input.gyro.attitude : VirtualTilt != Zero ? VirtualTilt : Quaternion.identity;
+        _gyroNeutral = SystemInfo.supportsGyroscope ? Input.gyro.attitude : VirtualTilt;
 #endif
         
         OnGyroReset?.Invoke();

@@ -33,8 +33,6 @@ public class VirtualGyro : EditorWindow
         _proxyRenderer = _proxy.GetComponent<MeshRenderer>();
 
         _preview.camera.clearFlags = CameraClearFlags.Nothing;
-
-        Gyro.OnStart += OnGyroStart;
     }
 
     private void OnGUI()
@@ -90,19 +88,11 @@ public class VirtualGyro : EditorWindow
         
         Gyro.VirtualTilt = Quaternion.Euler(Gyro.UnsignedAngle(-euler.x), Gyro.UnsignedAngle(-euler.z), euler.y);
         EditorGUI.LabelField(new Rect(0, previewRect.height + 3 * position.height/10, position.width, 20), "Attitude: " + Gyro.VirtualTilt);
-        
     }
 
     private void OnDisable()
     {
         _preview.Cleanup();
-        Gyro.OnStart -= OnGyroStart;
-    }
-
-    private void OnGyroStart()
-    {
-        Vector3 euler = _proxyTransform.eulerAngles;
-        Gyro.VirtualTilt = Quaternion.Euler(-euler.x, euler.z, -euler.y);
     }
     
     // Lifted from the CS Reference, darn internal classes
