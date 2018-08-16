@@ -24,48 +24,55 @@ public class Gyro : MonoBehaviour
 
     public static Quaternion VirtualTilt { get; set; }
 #endif
-    
-    private IEnumerator Start()
-    {
-        if (SystemInfo.supportsGyroscope)
-        {
-            Input.gyro.enabled = true;
-            // Sometimes, the gyroscope isn't ready and returns a bad quaternion.
-            // Unity checks the dot product for equality, we need to check each component
-            // Could probably do a straight check for zero given the nature of the bug
-            // This should never be waiting for more than a few frames
-            // There's a lot to say about these two lines, isn't there
-            if (Math.Abs(Input.gyro.attitude.w) < Mathf.Epsilon && 
-                Math.Abs(Input.gyro.attitude.x) < Mathf.Epsilon && 
-                Math.Abs(Input.gyro.attitude.y) < Mathf.Epsilon &&
-                Math.Abs(Input.gyro.attitude.z) < Mathf.Epsilon)
-                yield return new WaitUntil(() => Math.Abs(Input.gyro.attitude.w) < Mathf.Epsilon && 
-                                                 Math.Abs(Input.gyro.attitude.x) < Mathf.Epsilon && 
-                                                 Math.Abs(Input.gyro.attitude.y) < Mathf.Epsilon &&
-                                                 Math.Abs(Input.gyro.attitude.z) < Mathf.Epsilon);
 
-            _gyroNeutral = Input.gyro.attitude;
-        }
-#if UNITY_EDITOR
-        if (Math.Abs(VirtualTilt.w) < Mathf.Epsilon && 
-            Math.Abs(VirtualTilt.x) < Mathf.Epsilon && 
-            Math.Abs(VirtualTilt.y) < Mathf.Epsilon &&
-            Math.Abs(VirtualTilt.z) < Mathf.Epsilon)
-            yield return new WaitUntil(() => Math.Abs(VirtualTilt.w) < Mathf.Epsilon && 
-                                             Math.Abs(VirtualTilt.x) < Mathf.Epsilon && 
-                                             Math.Abs(VirtualTilt.y) < Mathf.Epsilon &&
-                                             Math.Abs(VirtualTilt.z) < Mathf.Epsilon);
-        
-        _gyroNeutral = VirtualTilt;
-#endif
-        _gravityNeutral = Physics.gravity;
-        
+    private void Awake()
+    {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         _style = new GUIStyle() {fontSize = 48};
 #endif
+
+        if (SystemInfo.supportsGyroscope)
+        {
+            Input.gyro.enabled = true;
+            _gyroNeutral = Input.gyro.attitude;
+        }
+#if UNITY_EDITOR
+        else
+        {
+            _gyroNeutral = VirtualTilt;
+        }
+#endif
+        // Sometimes, the gyroscope isn't ready and returns a bad quaternion
+        // Ensure the game doesn't try to run until a proper tilt is registered
+        // Start will wait for a proper value
+        if (QuaternionIsZero(_gyroNeutral))
+            Time.timeScale = 0;
+        _gravityNeutral = Physics.gravity;
+    }
+    
+    private IEnumerator Start()
+    {
+        // This should never be waiting for more than a few frames
+        if (QuaternionIsZero(_gyroNeutral))
+        {
+            if (SystemInfo.supportsGyroscope)
+            {
+                yield return new WaitUntil(() => !QuaternionIsZero(Input.gyro.attitude));
+                _gyroNeutral = Input.gyro.attitude;
+            }
+
+#if UNITY_EDITOR
+            else
+            {
+                yield return new WaitUntil(() => !QuaternionIsZero(VirtualTilt));
+                _gyroNeutral = VirtualTilt;
+            }
+#endif
+            
+            Time.timeScale = 1;
+        }
     }
 
-    // Update is called once per frame
     private void FixedUpdate()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -76,13 +83,13 @@ public class Gyro : MonoBehaviour
         Vector3 euler = (Quaternion.Inverse(_gyroNeutral) * Input.gyro.attitude).eulerAngles; // In full builds, we don't need all those variables, just get the value directly
 #endif
         Tilt = Quaternion.Euler(ThresholdAngle(euler.x), ThresholdAngle(euler.z), ThresholdAngle(euler.y)); // Not a typo, need to reinterpret gyroscope
+
         TiltGravity();
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
     private void OnGUI()
     {
-        GUILayout.Label("Gyroscope Enabled:" + Input.gyro.enabled, _style);
         GUILayout.Label("Neutral: " + _gyroNeutral, _style);
         GUILayout.Label("Attitude: " + _attitude, _style);
         GUILayout.Label("Gravity: " + Physics.gravity, _style);
@@ -99,6 +106,7 @@ public class Gyro : MonoBehaviour
         euler.x = ClampAngle(euler.x, -_maxAngle, _maxAngle);
         euler.y = ClampAngle(euler.y, -_maxAngle, _maxAngle); // It just so happens that this won't affect gravity at all, could force zero
         euler.z = ClampAngle(euler.z, -_maxAngle, _maxAngle);
+
         Physics.gravity = Quaternion.Euler(euler) * _gravityNeutral;
     }
 
@@ -143,5 +151,16 @@ public class Gyro : MonoBehaviour
     public static float UnsignedAngle(float angle)
     {
         return angle < 0f ? angle + 360f : angle;
+    }
+
+    // Unity checks the dot product for equality, we need to check each component
+    // Could probably do a straight check for zero given the nature of the bug
+    // Could be made private
+    public static bool QuaternionIsZero(Quaternion q)
+    {
+        return Math.Abs(q.w) < Mathf.Epsilon &&
+               Math.Abs(q.x) < Mathf.Epsilon &&
+               Math.Abs(q.y) < Mathf.Epsilon &&
+               Math.Abs(q.z) < Mathf.Epsilon;
     }
 }

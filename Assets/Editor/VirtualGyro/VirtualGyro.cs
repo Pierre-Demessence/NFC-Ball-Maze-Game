@@ -1,4 +1,3 @@
-﻿
 using UnityEditor;
 using UnityEngine;
 
@@ -29,9 +28,10 @@ public class VirtualGyro : EditorWindow
         _preview = new PreviewRenderUtility();
         _proxy = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab");
         _proxyTransform = _proxy.transform;
+        _proxyTransform.eulerAngles = Vector3.zero;
         _proxyFilter = _proxy.GetComponent<MeshFilter>();
         _proxyRenderer = _proxy.GetComponent<MeshRenderer>();
-
+        _previewDir = Vector2.zero;
         _preview.camera.clearFlags = CameraClearFlags.Nothing;
     }
 
@@ -41,31 +41,25 @@ public class VirtualGyro : EditorWindow
         EditorGUIUtility.labelWidth = 50;
         Rect previewRect = new Rect(0, 0, position.width, position.height / 2);
 
-        Vector2 lastDir = _previewDir;
         _previewDir = Drag2D(_previewDir, previewRect);
         Vector3 euler = _proxyTransform.eulerAngles;
-        if (_previewDir != lastDir)
-        {
-            euler.x = _previewDir.y;
-            euler.z = _previewDir.x;
-        }
-        else
-        {
-            euler.x = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height, position.width, 20), "Pitch",
-                Gyro.SignedAngle(euler.x), -179.9f, 180));
-            euler.z = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height + position.height/10, position.width, 20),
-                "Roll", Gyro.SignedAngle(euler.z), -179.9f, 180));
-        }
-
+        
+        euler.x = _previewDir.y;
+        euler.z = _previewDir.x;
+    
+        euler.x = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height, position.width, 20), "Pitch",
+            Gyro.SignedAngle(euler.x), -179.9f, 180));
+        euler.z = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height + position.height/10, position.width, 20),
+            "Roll", Gyro.SignedAngle(euler.z), -179.9f, 180));
         euler.y = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height + 2 * position.height/10, position.width, 20), "Yaw", Gyro.SignedAngle(euler.y), -179.9f, 180));
 
-
         if (GUI.Button(new Rect(0, previewRect.height + 4 * position.height / 10, position.width, 20), "Reset"))
+        {
             euler = Vector3.zero;
-        
+            _previewDir = Vector2.zero;
+        }
+
         _proxyTransform.eulerAngles = euler;
-        
-        _previewDir = Drag2D(_previewDir, previewRect);
         _preview.BeginPreview(previewRect, GUIStyle.none);
         
         Bounds bounds = _proxyFilter.sharedMesh.bounds;
