@@ -2886,6 +2886,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainMenuPanel: {fileID: 2090240353}
   _settingsPanel: {fileID: 1361382752}
+  _sliderVolumeGlobal: {fileID: 1841377915}
+  _sliderVolumeMusic: {fileID: 132271478}
+  _sliderVolumeSound: {fileID: 1172807471}
   _music: {fileID: 1281609887}
 --- !u!4 &1655976300
 Transform:
