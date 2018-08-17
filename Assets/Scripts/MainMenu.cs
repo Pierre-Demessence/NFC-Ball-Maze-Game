@@ -44,7 +44,11 @@ public class MainMenu : MonoBehaviour
 
 	public void MenuQuit()
 	{
-		Application.Quit();	
+#if UNITY_EDITOR
+		Debug.Log("Quitting... Not working in Editor!");
+#else
+		Application.Quit()
+#endif
 	}
 
 	public void SettingsGoMenu()
