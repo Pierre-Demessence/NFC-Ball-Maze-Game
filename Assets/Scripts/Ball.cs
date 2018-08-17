@@ -29,7 +29,8 @@ public class Ball : MonoBehaviour {
 		// Checking the layer containing the walls
 		if (other.collider.gameObject.layer == 10)
 		{
-			float factor = other.impulse.magnitude / 5;
+			// Debug.Log(other.impulse.magnitude);
+			float factor = other.impulse.magnitude / (_rBody.mass * 3.5f);
 			_sfxColliding.pitch = Mathf.Lerp(_sfxCollidingPitchMin, _sfxCollidingPitchMax, factor);
 			_sfxColliding.volume = Mathf.Lerp(_sfxCollidingVolumeMin, _sfxCollidingVolumeMax, factor) * MainMenu.SoundVolume;
 			_sfxColliding.Play();
