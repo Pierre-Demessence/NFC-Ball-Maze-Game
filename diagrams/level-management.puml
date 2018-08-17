@@ -1,6 +1,4 @@
 @startuml
-@startuml
-
 title Classes - Level Management
 
 abstract class Level {
@@ -69,8 +67,4 @@ Level -right-> LevelGenerator
 Level -left-> MazeRenderer
 Level2D -right-> LevelGenerator2D
 Level2D -left-> MazeRenderer2D
-
-
-
-@enduml
 @enduml
