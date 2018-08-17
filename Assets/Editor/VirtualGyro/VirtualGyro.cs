@@ -12,6 +12,7 @@ public class VirtualGyro : EditorWindow
     private MeshRenderer _proxyRenderer;
 
     private Vector2 _previewDir;
+    private Vector3 _eulerAngles;
     
     [MenuItem("Tools/Virtual Gyro")]
     public static void Init()
@@ -33,6 +34,7 @@ public class VirtualGyro : EditorWindow
         _proxyRenderer = _proxy.GetComponent<MeshRenderer>();
         _previewDir = Vector2.zero;
         _preview.camera.clearFlags = CameraClearFlags.Nothing;
+        _eulerAngles = Vector3.zero;
     }
 
     private void OnGUI()
@@ -40,26 +42,34 @@ public class VirtualGyro : EditorWindow
         
         EditorGUIUtility.labelWidth = 50;
         Rect previewRect = new Rect(0, 0, position.width, position.height / 2);
-
-        _previewDir = Drag2D(_previewDir, previewRect);
-        Vector3 euler = _proxyTransform.eulerAngles;
         
-        euler.x = _previewDir.y;
-        euler.z = _previewDir.x;
-    
-        euler.x = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height, position.width, 20), "Pitch",
-            Gyro.SignedAngle(euler.x), -179.9f, 180));
-        euler.z = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height + position.height/10, position.width, 20),
-            "Roll", Gyro.SignedAngle(euler.z), -179.9f, 180));
-        euler.y = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height + 2 * position.height/10, position.width, 20), "Yaw", Gyro.SignedAngle(euler.y), -179.9f, 180));
+        
+        EditorGUI.BeginChangeCheck();
+        _previewDir = Drag2D(_previewDir, previewRect);
+        if (EditorGUI.EndChangeCheck())
+        {
+            _eulerAngles.x = _previewDir.y;
+            _eulerAngles.z = _previewDir.x;
+        }
+        else
+        {
+            _eulerAngles.x = Gyro.SignedAngle(EditorGUI.Slider(new Rect(0, previewRect.height, position.width, 20), "Pitch",
+                Gyro.SignedAngle(_eulerAngles.x), -180f, 180));
+            _eulerAngles.z = Gyro.SignedAngle(EditorGUI.Slider(
+                new Rect(0, previewRect.height + position.height / 10, position.width, 20),
+                "Roll", Gyro.SignedAngle(_eulerAngles.z), -180f, 180));
+            _eulerAngles.y = Gyro.SignedAngle(EditorGUI.Slider(
+                new Rect(0, previewRect.height + 2 * position.height / 10, position.width, 20), "Yaw",
+                Gyro.SignedAngle(_eulerAngles.y), -180f, 180));
+        }
 
         if (GUI.Button(new Rect(0, previewRect.height + 4 * position.height / 10, position.width, 20), "Reset"))
         {
-            euler = Vector3.zero;
+            _eulerAngles = Vector3.zero;
             _previewDir = Vector2.zero;
         }
 
-        _proxyTransform.eulerAngles = euler;
+        _proxyTransform.eulerAngles = _eulerAngles;
         _preview.BeginPreview(previewRect, GUIStyle.none);
         
         Bounds bounds = _proxyFilter.sharedMesh.bounds;
@@ -80,7 +90,7 @@ public class VirtualGyro : EditorWindow
         
         _preview.EndAndDrawPreview(previewRect);
         
-        Gyro.VirtualTilt = Quaternion.Euler(Gyro.UnsignedAngle(-euler.x), Gyro.UnsignedAngle(-euler.z), euler.y);
+        Gyro.VirtualTilt = Quaternion.Euler(Gyro.UnsignedAngle(-_eulerAngles.x), Gyro.UnsignedAngle(-_eulerAngles.z), _eulerAngles.y);
         EditorGUI.LabelField(new Rect(0, previewRect.height + 3 * position.height/10, position.width, 20), "Attitude: " + Gyro.VirtualTilt);
     }
 
