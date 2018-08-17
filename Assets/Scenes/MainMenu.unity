@@ -2886,6 +2886,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainMenuPanel: {fileID: 2090240353}
   _settingsPanel: {fileID: 1361382752}
+  _sliderVolumeGlobal: {fileID: 1841377915}
+  _sliderVolumeMusic: {fileID: 132271478}
+  _sliderVolumeSound: {fileID: 1172807471}
   _music: {fileID: 1281609887}
 --- !u!4 &1655976300
 Transform:
@@ -3393,6 +3396,7 @@ GameObject:
   - component: {fileID: 2007273812}
   - component: {fileID: 2007273811}
   - component: {fileID: 2007273810}
+  - component: {fileID: 2007273813}
   m_Layer: 0
   m_Name: ButtonQuit
   m_TagString: Untagged
@@ -3505,6 +3509,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2007273808}
   m_CullTransparentMesh: 0
+--- !u!114 &2007273813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2007273808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e95fb232b1128954a8875c5b11480c55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2090240353
 GameObject:
   m_ObjectHideFlags: 0

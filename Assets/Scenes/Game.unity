@@ -485,6 +485,8 @@ MonoBehaviour:
   _panelPause: {fileID: 1553059305}
   _panelWin: {fileID: 1353266617}
   _buttonPause: {fileID: 258911411}
+  _ball: {fileID: 1648743186}
+  _ballSpawner: {fileID: 709379903}
 --- !u!4 &156634734
 Transform:
   m_ObjectHideFlags: 0
@@ -1158,7 +1160,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4331822469434630, guid: 1d53e8ef7f08ce941b97373ffc4493d5, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 23924500448592594, guid: 1d53e8ef7f08ce941b97373ffc4493d5,
         type: 2}
@@ -2563,6 +2565,7 @@ Transform:
   m_Children:
   - {fileID: 199406461}
   - {fileID: 524414704}
+  - {fileID: 709379904}
   - {fileID: 1191414008}
   m_Father: {fileID: 0}
   m_RootOrder: 2
