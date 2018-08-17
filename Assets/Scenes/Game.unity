@@ -1267,9 +1267,18 @@ Prefab:
       propertyPath: OnGoal.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1633299310543278, guid: 1d53e8ef7f08ce941b97373ffc4493d5, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d53e8ef7f08ce941b97373ffc4493d5, type: 2}
   m_IsPrefabAsset: 0
+--- !u!4 &412316166 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4331822469434630, guid: 1d53e8ef7f08ce941b97373ffc4493d5,
+    type: 2}
+  m_PrefabInternal: {fileID: 412316165}
 --- !u!1 &443133660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3010,16 +3019,11 @@ Transform:
   m_Children:
   - {fileID: 199406461}
   - {fileID: 524414704}
-  - {fileID: 1191414008}
+  - {fileID: 412316166}
   - {fileID: 533443847}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1191414008 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4331822469434630, guid: 1d53e8ef7f08ce941b97373ffc4493d5,
-    type: 2}
-  m_PrefabInternal: {fileID: 412316165}
 --- !u!1 &1201165989
 GameObject:
   m_ObjectHideFlags: 0
