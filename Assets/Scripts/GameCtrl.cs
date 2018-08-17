@@ -11,51 +11,76 @@ public class GameCtrl : MonoBehaviour
 	[SerializeField] private GameObject _panelWin;
 	[SerializeField] private GameObject _buttonPause;
 	
+	[SerializeField] private GameObject _ball;
+	[SerializeField] private GameObject _ballSpawner;
+	
+	private int _defaultSleepTimeout;
+
+	private void Awake()
+	{
+		_defaultSleepTimeout = Screen.sleepTimeout;
+	}
 
 	private void Start()
 	{
 		_music.volume = MainMenu.MusicVolume;
+		
+		Resume();
+	}
+	
+	private void Pause()
+	{
+		Screen.sleepTimeout = _defaultSleepTimeout;
+		
+		_buttonPause.SetActive(false);
+		_ballRollingSound.enabled = false;
+		
+		Time.timeScale = 0;
+	}
+
+	private void Resume()
+	{
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		
 		_buttonPause.SetActive(true);
 		_panelPause.SetActive(false);
 		_panelWin.SetActive(false);
+		_ballRollingSound.enabled = true;
+		
+		Time.timeScale = 1;
 	}
 
 	public void GamePause()
-	{
-		_buttonPause.SetActive(false);
+	{		
 		_panelPause.SetActive(true);
-		_ballRollingSound.enabled = false;
-		Time.timeScale = 0;
+		
+		Pause();
 	}
 
 	public void GameResume()
 	{
-		_buttonPause.SetActive(true);
-		_panelPause.SetActive(false);
-		_ballRollingSound.enabled = true;
-		Time.timeScale = 1;
+		Resume();
 	}
 
 	public void ShowWinScreen()
 	{
-		_buttonPause.SetActive(false);
 		_panelWin.SetActive(true);
+		
+		Pause();
 	}
 	
 	public void PlayAgain()
 	{
-		// TODO 
+		_ball.transform.position = _ballSpawner.transform.position;
 		
-		// _buttonPause.SetActive(true);
-		// _panelWin.SetActive(false);
+		Resume();
 	}
 	
 	public void BackToMenu()
 	{
-		_buttonPause.SetActive(true);
-		_panelPause.SetActive(false);
-		_panelWin.SetActive(false);
-		Time.timeScale = 1;
 		SceneManager.LoadScene("MainMenu");
+		
+		Time.timeScale = 1;
+		Screen.sleepTimeout = _defaultSleepTimeout;
 	}
 }
