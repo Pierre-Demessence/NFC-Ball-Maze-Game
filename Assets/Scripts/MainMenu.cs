@@ -47,7 +47,7 @@ public class MainMenu : MonoBehaviour
 #if UNITY_EDITOR
 		Debug.Log("Quitting... Not working in Editor!");
 #else
-		Application.Quit()
+		Application.Quit();
 #endif
 	}
 
