@@ -24,6 +24,7 @@ public class CollisionLayerModifierEditor : Editor
 
 		// Wish children could be relabeled, but there doesn't appear to be a way to do it with just PropertyField
 		EditorGUILayout.PropertyField(_validTags, true);
+		// LayoutField is a bit weird, other Fields can directly change the property, but LayoutField does not have that overload
 		_enterLayer.intValue = EditorGUILayout.LayerField("Enter Layer", _enterLayer.intValue);
 		_exitLayer.intValue = EditorGUILayout.LayerField("Exit Layer", _exitLayer.intValue);
 
