@@ -1,0 +1,76 @@
+@startuml
+@startuml
+
+title Classes - Level Management
+
+abstract class Level {
+
+}
+
+interface LevelGenerator<T extends Level> {
+    {abstract}+T Generate()
+}
+interface MazeRenderer<T extends Level> {
+    {abstract}+void Draw(T level)
+}
+
+class CellData2D {
+    +Vector2Int position
+    
+    +bool NorthWall
+    +bool SouthWall
+    +bool EastWall
+    +bool WestWall
+    
+    +void RemoveWall(Vector2Int dir)
+}
+
+class Level2D {
+    +Vector2Int Size
+    +Vector2Int StartPosition
+    +Vector2Int EndPositon
+    +Dictionary<Vector2Int, CellData2D> Data
+    
+    {static}+void SerializeTo(Level2D level, string path)
+    {static}+Level2D DeserializeFrom(string path)
+}
+class LevelGenerator2D<extends MonoBehaviour> {
+    __Exposed Fields__
+    +Vector2Int MazeSize
+    __Private Fields__
+    -Dictionary<Vector2Int, CellData2D> visitedCells
+    -Dictionary<Vector2Int, CellData2D> unvisitedCells
+    __Private Methods__
+    -void Initialize()
+    -CellData2D GetRandomVisitedNeighbour(Vector2Int position)
+    -CellData2D GetRandomUnvisitedNeighbour(Vector2Int position)
+    -CellData2D GetNeighbour(Vector2Int position, Vector2Int dir)
+    
+}
+class MazeRenderer2D<extends MonoBehaviour> {
+    __Exposed Fields__
+    +Vector2 CellSize
+    +Material WallMaterial
+    +bool DrawFloor
+    __Private Fields__
+    -MeshFilter mazeMesh
+    -MeshRenderer mazeRenderer
+    __Private Methods__
+    -int[] GetWallTris(CellData2D cell, Vector3[] verts)
+    -Vector3[] GetWallVerts(CellData2D cell)
+}
+
+
+Level2D .up.|> Level
+LevelGenerator2D .up.|> LevelGenerator
+MazeRenderer2D .up.|> MazeRenderer
+
+Level -right-> LevelGenerator
+Level -left-> MazeRenderer
+Level2D -right-> LevelGenerator2D
+Level2D -left-> MazeRenderer2D
+
+
+
+@enduml
+@enduml
