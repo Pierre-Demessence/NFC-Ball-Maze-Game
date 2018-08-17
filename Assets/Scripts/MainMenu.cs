@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-	private static float _globalVolume = 1f;
-	private static float _musicVolume = 0.5f;
-	private static float _soundVolume = 1f;
+	private static float _volumeGlobal = 1f;
+	private static float _volumeMusic = 0.5f;
+	private static float _volumeSound = 1f;
 	
 	[SerializeField] private GameObject _mainMenuPanel;
 	[SerializeField] private GameObject _settingsPanel;
@@ -16,19 +16,26 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] private Slider _sliderVolumeMusic;
 	[SerializeField] private Slider _sliderVolumeSound;
 	
-	public static float MusicVolume => _musicVolume * _globalVolume;
-	public static float SoundVolume => _soundVolume * _globalVolume;
+	public static float MusicVolume => _volumeMusic * _volumeGlobal;
+	public static float SoundVolume => _volumeSound * _volumeGlobal;
 	
 	[SerializeField] private AudioSource _music;
+
+	private void Awake()
+	{
+		_volumeGlobal = PlayerPrefs.GetFloat("volumeGlobal", 1f);
+		_volumeMusic = PlayerPrefs.GetFloat("volumeMusic", 0.5f);
+		_volumeSound = PlayerPrefs.GetFloat("volumeSound", 1f);
+	}
 
 	private void Start()
 	{
 		_settingsPanel.SetActive(false);
 		_mainMenuPanel.SetActive(true);
 		_music.volume = MusicVolume;
-		_sliderVolumeGlobal.value = _globalVolume;
-		_sliderVolumeMusic.value = _musicVolume;
-		_sliderVolumeSound.value = _soundVolume;
+		_sliderVolumeGlobal.value = _volumeGlobal;
+		_sliderVolumeMusic.value = _volumeMusic;
+		_sliderVolumeSound.value = _volumeSound;
 	}
 
 	public void MenuGoPlay()
@@ -44,7 +51,11 @@ public class MainMenu : MonoBehaviour
 
 	public void MenuQuit()
 	{
-		Application.Quit();	
+#if UNITY_EDITOR
+		Debug.Log("Quitting... Not working in Editor!");
+#else
+		Application.Quit();
+#endif
 	}
 
 	public void SettingsGoMenu()
@@ -55,18 +66,21 @@ public class MainMenu : MonoBehaviour
 
 	public void SettingsGlobalVolumeChanged(float value)
 	{
-		_globalVolume = value;
+		_volumeGlobal = value;
 		_music.volume = MusicVolume;
+		PlayerPrefs.SetFloat("volumeGlobal", value);
 	}
 	
 	public void SettingsMusicVolumeChanged(float value)
 	{
-		_musicVolume = value;
+		_volumeMusic = value;
 		_music.volume = MusicVolume;
+		PlayerPrefs.SetFloat("volumeMusic", value);
 	}
 	
 	public void SettingsSoundVolumeChanged(float value)
 	{
-		_soundVolume = value;
+		_volumeSound = value;
+		PlayerPrefs.SetFloat("volumeSound", value);
 	}
 }
