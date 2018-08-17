@@ -11,6 +11,9 @@ public class GameCtrl : MonoBehaviour
 	[SerializeField] private GameObject _panelWin;
 	[SerializeField] private GameObject _buttonPause;
 	
+	[SerializeField] private GameObject _ball;
+	[SerializeField] private GameObject _ballSpawner;
+	
 	private int _defaultSleepTimeout;
 
 	private void Awake()
@@ -68,9 +71,9 @@ public class GameCtrl : MonoBehaviour
 	
 	public void PlayAgain()
 	{
-		// TODO 
+		_ball.transform.position = _ballSpawner.transform.position;
 		
-		// Resume();
+		Resume();
 	}
 	
 	public void BackToMenu()
