@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33738601660414910}
   - component: {fileID: 23256800422701836}
   m_Layer: 0
-  m_Name: phone_proxy
+  m_Name: PhoneLandscape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
