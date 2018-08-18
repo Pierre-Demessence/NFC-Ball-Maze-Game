@@ -7,9 +7,9 @@ public class VirtualGyro : EditorWindow
     private PreviewRenderUtility _preview;
 
     private GameObject _proxy;
-    private Transform _proxyTransform;
+    // private Transform _proxyTransform;
     private MeshFilter _proxyFilter;
-    private MeshRenderer _proxyRenderer;
+    // private MeshRenderer _proxyRenderer;
 
     private Vector2 _previewDir;
     private Vector3 _eulerAngles;
@@ -27,11 +27,12 @@ public class VirtualGyro : EditorWindow
     private void OnEnable()
     {
         _preview = new PreviewRenderUtility();
-        _proxy = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab");
-        _proxyTransform = _proxy.transform;
-        _proxyTransform.eulerAngles = Vector3.zero;
+        _proxy = _preview.InstantiatePrefabInScene(
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab"));
+        // _proxyTransform = _proxy.transform;
+        _proxy.transform.eulerAngles = Vector3.zero;
         _proxyFilter = _proxy.GetComponent<MeshFilter>();
-        _proxyRenderer = _proxy.GetComponent<MeshRenderer>();
+        //_proxyRenderer = _proxy.GetComponent<MeshRenderer>();
         _previewDir = Vector2.zero;
         _preview.camera.clearFlags = CameraClearFlags.Nothing;
         _eulerAngles = Vector3.zero;
@@ -69,7 +70,7 @@ public class VirtualGyro : EditorWindow
             _previewDir = Vector2.zero;
         }
 
-        _proxyTransform.eulerAngles = _eulerAngles;
+        _proxy.transform.eulerAngles = _eulerAngles;
         _preview.BeginPreview(previewRect, GUIStyle.none);
         
         Bounds bounds = _proxyFilter.sharedMesh.bounds;
@@ -81,11 +82,11 @@ public class VirtualGyro : EditorWindow
         _preview.camera.farClipPlane = distance + halfSize * 1.1f;
         _preview.camera.transform.eulerAngles = Vector3.right * 90;
 
-        _preview.lights[0].intensity = 1f;
+        _preview.lights[0].intensity = 1.4f;
         _preview.lights[0].transform.rotation = Quaternion.Euler(90,0,0);
-        _preview.ambientColor = new Color(.1f, .1f, .1f, 0);
+        _preview.ambientColor = Color.black;
         
-        _preview.DrawMesh(_proxyFilter.sharedMesh, _proxyTransform.position, _proxyTransform.rotation, _proxyRenderer.sharedMaterial, 0);
+        //_preview.DrawMesh(_proxyFilter.sharedMesh, _proxyTransform.position, _proxyTransform.rotation, _proxyRenderer.sharedMaterial, 0);
         _preview.Render();
         
         _preview.EndAndDrawPreview(previewRect);
