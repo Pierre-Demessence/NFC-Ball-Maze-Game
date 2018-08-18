@@ -3574,6 +3574,11 @@ Prefab:
       propertyPath: m_IsKinematic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 33009503882177684, guid: 8be0715b4cf987440a02fbe7b2d461bc,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 4e83cfce40ee25241bfb2c258027a38c, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8be0715b4cf987440a02fbe7b2d461bc, type: 2}
   m_IsPrefabAsset: 0
