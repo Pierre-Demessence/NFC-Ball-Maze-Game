@@ -15,7 +15,7 @@ public class VirtualGyro : EditorWindow
     private Vector3 _eulerAngles;
     
     [MenuItem("Tools/Virtual Gyro")]
-    public static void Init()
+    public static void InitWindow()
     {
         VirtualGyro window = GetWindow<VirtualGyro>("Gyroscope");
         window.autoRepaintOnSceneChange = true;
@@ -24,26 +24,34 @@ public class VirtualGyro : EditorWindow
         window.Show();
     }
 
+    private void Init()
+    {
+        if (_preview == null)
+        {
+            _preview = new PreviewRenderUtility();
+            _preview.camera.clearFlags = CameraClearFlags.Nothing;
+        }
+
+        if (_proxy == null)
+        {
+            _proxy = _preview.InstantiatePrefabInScene(
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab"));
+            _proxyFilter = _proxy.GetComponent<MeshFilter>();
+        }
+    }
+    
     private void OnEnable()
     {
-        _preview = new PreviewRenderUtility();
-        _proxy = _preview.InstantiatePrefabInScene(
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab"));
-        // _proxyTransform = _proxy.transform;
-        _proxy.transform.eulerAngles = Vector3.zero;
-        _proxyFilter = _proxy.GetComponent<MeshFilter>();
-        //_proxyRenderer = _proxy.GetComponent<MeshRenderer>();
         _previewDir = Vector2.zero;
-        _preview.camera.clearFlags = CameraClearFlags.Nothing;
         _eulerAngles = Vector3.zero;
     }
 
     private void OnGUI()
     {
+        Init();
         
         EditorGUIUtility.labelWidth = 50;
         Rect previewRect = new Rect(0, 0, position.width, position.height / 2);
-        
         
         EditorGUI.BeginChangeCheck();
         _previewDir = Drag2D(_previewDir, previewRect);
@@ -97,9 +105,13 @@ public class VirtualGyro : EditorWindow
 
     private void OnDisable()
     {
-        _preview.Cleanup();
+        if (_preview != null)
+        {
+            _preview.Cleanup();
+            _preview = null;
+        }
     }
-    
+
     // Lifted from the CS Reference, darn internal classes
     private static Vector2 Drag2D(Vector2 scrollPosition, Rect position)
     {
