@@ -57,8 +57,8 @@ public class VirtualGyro : EditorWindow
         _previewDir = Drag2D(_previewDir, previewRect);
         if (EditorGUI.EndChangeCheck())
         {
-            _eulerAngles.x = _previewDir.y;
-            _eulerAngles.z = _previewDir.x;
+            _eulerAngles.x = Gyro.SignedAngle(Gyro.UnsignedAngle(_previewDir.y % 360));
+            _eulerAngles.z = Gyro.SignedAngle(Gyro.UnsignedAngle(_previewDir.x % 360));
         }
         else
         {
@@ -131,7 +131,7 @@ public class VirtualGyro : EditorWindow
                 if (GUIUtility.hotControl == id)
                 {
                     scrollPosition -= evt.delta * (evt.shift ? 3 : 1) / Mathf.Min(position.width, position.height) * 140.0f;
-                    scrollPosition.y = Mathf.Clamp(scrollPosition.y, -90, 90);
+                    //scrollPosition.y = Mathf.Clamp(scrollPosition.y, -90, 90);
                     evt.Use();
                     GUI.changed = true;
                 }
