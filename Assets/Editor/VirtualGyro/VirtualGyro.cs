@@ -7,15 +7,15 @@ public class VirtualGyro : EditorWindow
     private PreviewRenderUtility _preview;
 
     private GameObject _proxy;
-    private Transform _proxyTransform;
+    // private Transform _proxyTransform;
     private MeshFilter _proxyFilter;
-    private MeshRenderer _proxyRenderer;
+    // private MeshRenderer _proxyRenderer;
 
     private Vector2 _previewDir;
     private Vector3 _eulerAngles;
     
     [MenuItem("Tools/Virtual Gyro")]
-    public static void Init()
+    public static void InitWindow()
     {
         VirtualGyro window = GetWindow<VirtualGyro>("Gyroscope");
         window.autoRepaintOnSceneChange = true;
@@ -24,32 +24,41 @@ public class VirtualGyro : EditorWindow
         window.Show();
     }
 
+    private void Init()
+    {
+        if (_preview == null)
+        {
+            _preview = new PreviewRenderUtility();
+            _preview.camera.clearFlags = CameraClearFlags.Nothing;
+        }
+
+        if (_proxy == null)
+        {
+            _proxy = _preview.InstantiatePrefabInScene(
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab"));
+            _proxyFilter = _proxy.GetComponent<MeshFilter>();
+        }
+    }
+    
     private void OnEnable()
     {
-        _preview = new PreviewRenderUtility();
-        _proxy = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Editor/VirtualGyro/Proxies/PhoneLandscape.prefab");
-        _proxyTransform = _proxy.transform;
-        _proxyTransform.eulerAngles = Vector3.zero;
-        _proxyFilter = _proxy.GetComponent<MeshFilter>();
-        _proxyRenderer = _proxy.GetComponent<MeshRenderer>();
         _previewDir = Vector2.zero;
-        _preview.camera.clearFlags = CameraClearFlags.Nothing;
         _eulerAngles = Vector3.zero;
     }
 
     private void OnGUI()
     {
+        Init();
         
         EditorGUIUtility.labelWidth = 50;
         Rect previewRect = new Rect(0, 0, position.width, position.height / 2);
-        
         
         EditorGUI.BeginChangeCheck();
         _previewDir = Drag2D(_previewDir, previewRect);
         if (EditorGUI.EndChangeCheck())
         {
-            _eulerAngles.x = _previewDir.y;
-            _eulerAngles.z = _previewDir.x;
+            _eulerAngles.x = Gyro.SignedAngle(Gyro.UnsignedAngle(_previewDir.y % 360));
+            _eulerAngles.z = Gyro.SignedAngle(Gyro.UnsignedAngle(_previewDir.x % 360));
         }
         else
         {
@@ -69,7 +78,7 @@ public class VirtualGyro : EditorWindow
             _previewDir = Vector2.zero;
         }
 
-        _proxyTransform.eulerAngles = _eulerAngles;
+        _proxy.transform.eulerAngles = _eulerAngles;
         _preview.BeginPreview(previewRect, GUIStyle.none);
         
         Bounds bounds = _proxyFilter.sharedMesh.bounds;
@@ -81,11 +90,11 @@ public class VirtualGyro : EditorWindow
         _preview.camera.farClipPlane = distance + halfSize * 1.1f;
         _preview.camera.transform.eulerAngles = Vector3.right * 90;
 
-        _preview.lights[0].intensity = 1f;
+        _preview.lights[0].intensity = 1.4f;
         _preview.lights[0].transform.rotation = Quaternion.Euler(90,0,0);
-        _preview.ambientColor = new Color(.1f, .1f, .1f, 0);
+        _preview.ambientColor = Color.black;
         
-        _preview.DrawMesh(_proxyFilter.sharedMesh, _proxyTransform.position, _proxyTransform.rotation, _proxyRenderer.sharedMaterial, 0);
+        //_preview.DrawMesh(_proxyFilter.sharedMesh, _proxyTransform.position, _proxyTransform.rotation, _proxyRenderer.sharedMaterial, 0);
         _preview.Render();
         
         _preview.EndAndDrawPreview(previewRect);
@@ -96,9 +105,13 @@ public class VirtualGyro : EditorWindow
 
     private void OnDisable()
     {
-        _preview.Cleanup();
+        if (_preview != null)
+        {
+            _preview.Cleanup();
+            _preview = null;
+        }
     }
-    
+
     // Lifted from the CS Reference, darn internal classes
     private static Vector2 Drag2D(Vector2 scrollPosition, Rect position)
     {
@@ -118,7 +131,7 @@ public class VirtualGyro : EditorWindow
                 if (GUIUtility.hotControl == id)
                 {
                     scrollPosition -= evt.delta * (evt.shift ? 3 : 1) / Mathf.Min(position.width, position.height) * 140.0f;
-                    scrollPosition.y = Mathf.Clamp(scrollPosition.y, -90, 90);
+                    //scrollPosition.y = Mathf.Clamp(scrollPosition.y, -90, 90);
                     evt.Use();
                     GUI.changed = true;
                 }
