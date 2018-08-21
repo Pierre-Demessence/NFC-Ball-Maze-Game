@@ -1,0 +1,33 @@
+@startuml
+
+[*] --> MainMenu : Start
+MainMenu --> [*] : Quit
+MainMenu --> Settings
+Settings --> MainMenu
+
+MainMenu --> LevelSelection
+MainMenu --> LevelGeneration
+
+LevelSelection --> Loading
+LevelGeneration --> Loading
+
+state Loading {
+    [*] --> Rendering
+    Rendering --> [*]
+}
+
+Loading --> Game
+
+state Game {
+    [*] --> Playing
+    Playing --> Paused
+    Paused --> Playing
+    Paused --> [*]
+    Playing --> Won
+    Won --> [*]
+}
+
+Game -up-> LevelSelection
+Game -up-> LevelGeneration
+
+@enduml
