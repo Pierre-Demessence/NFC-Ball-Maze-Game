@@ -78,7 +78,7 @@ namespace LevelGeneration
 
             foreach (Vector2Int neighbour in GetNeighbours(position))
             {
-                if (_visitedCells.ContainsKey(neighbour)) neighbours.Remove(neighbour);
+                if (_unvisitedCells.ContainsKey(neighbour)) neighbours.Remove(neighbour);
             }
 
             return neighbours[Random.Range(0, neighbours.Count)];
@@ -90,7 +90,7 @@ namespace LevelGeneration
 
             foreach (Vector2Int neighbour in GetNeighbours(position))
             {
-                if (_unvisitedCells.ContainsKey(neighbour)) neighbours.Remove(neighbour);
+                if (_visitedCells.ContainsKey(neighbour)) neighbours.Remove(neighbour);
             }
 
             return neighbours[Random.Range(0, neighbours.Count)];
