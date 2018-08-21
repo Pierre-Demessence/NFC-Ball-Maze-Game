@@ -80,6 +80,11 @@ public class Gyro : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Physics.gravity = _gravityNeutral;
+    }
+
     private void FixedUpdate()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
