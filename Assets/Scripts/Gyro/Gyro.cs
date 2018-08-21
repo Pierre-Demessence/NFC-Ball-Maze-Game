@@ -8,31 +8,32 @@ public class Gyro : MonoBehaviour
 
     [SerializeField, Tooltip("The maximum angle in either direction on an unconstrained axis\n0 is unclamped")] 
     private float _maxAngle;
-    [SerializeField, Tooltip("Represents the dead zone of the gyroscope, this affects all tilting objects")] private float _threshold;
+    [SerializeField, Tooltip("Represents the dead zone of the gyroscope, this affects all tilting objects")] 
+    private float _threshold;
 
+    [SerializeField, Tooltip("Override system gyro with virtual gyro")]
+    private bool _virtualOverride;
+    
     private Quaternion _gyroNeutral;
     private Vector3 _gravityNeutral;
 
     public static event Action OnGyroReset;
     
     public static Quaternion Tilt { get; private set; }
-
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-    [SerializeField, Tooltip("Override system gyro with virtual gyro")]
-    private bool _virtualOverride;
+    public static Quaternion VirtualTilt { get; set; }
     
+#if UNITY_EDITOR || DEVELOPMENT_BUILD    
     private Quaternion _pureTilt;
     private Quaternion _attitude;
-    private GUIStyle _style;
-
-    public static Quaternion VirtualTilt { get; set; }
+    private GUIStyle _style;   
 #endif
 
     private void Awake()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         _style = new GUIStyle() {fontSize = 48};
-
+#endif
+        
         if (SystemInfo.supportsGyroscope && !_virtualOverride)
         {
             Input.gyro.enabled = true;
@@ -42,7 +43,7 @@ public class Gyro : MonoBehaviour
         {
             _gyroNeutral = VirtualTilt;
         }
-#endif
+
         // Sometimes, the gyroscope isn't ready and returns a bad quaternion
         // Ensure the game doesn't try to run until a proper tilt is registered
         // Start will wait for a proper value
@@ -56,22 +57,25 @@ public class Gyro : MonoBehaviour
         // This should never be waiting for more than a few frames
         if (QuaternionIsZero(_gyroNeutral))
         {
-            if (SystemInfo.supportsGyroscope 
-                #if UNITY_EDITOR || DEVELOPMENT_BUILD
-                    && !_virtualOverride)
-                #endif
-            {
-                yield return new WaitUntil(() => !QuaternionIsZero(Input.gyro.attitude));
-                _gyroNeutral = Input.gyro.attitude;
-            }
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-            else
+            if (_virtualOverride)
             {
                 yield return new WaitUntil(() => !QuaternionIsZero(VirtualTilt));
                 _gyroNeutral = VirtualTilt;
             }
-#endif
-            
+            else if(SystemInfo.supportsGyroscope)
+            {
+                yield return new WaitUntil(() => !QuaternionIsZero(Input.gyro.attitude));
+                _gyroNeutral = Input.gyro.attitude;
+            }
+            else
+            {
+                // We have nothing!
+                // Should probably throw an exception
+                _virtualOverride = true;
+                VirtualTilt = Quaternion.identity;
+                _gyroNeutral = Quaternion.identity;
+            }
+
             Time.timeScale = 1;
         }
     }
@@ -79,11 +83,11 @@ public class Gyro : MonoBehaviour
     private void FixedUpdate()
     {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        _attitude = (SystemInfo.supportsGyroscope && !_virtualOverride) ? Input.gyro.attitude : VirtualTilt;
+        _attitude = _virtualOverride ? VirtualTilt : Input.gyro.attitude;
         _pureTilt = Quaternion.Inverse(_gyroNeutral) * _attitude;
         Vector3 euler = _pureTilt.eulerAngles;
 #else
-        Vector3 euler = (Quaternion.Inverse(_gyroNeutral) * Input.gyro.attitude).eulerAngles; // In full builds, we don't need all those variables, just get the value directly
+        Vector3 euler = (Quaternion.Inverse(_gyroNeutral) * (_virtualOverride ? VirtualTilt : Input.gyro.attitude)).eulerAngles; // In full builds, we don't need all those variables, just get the value directly
 #endif
         Tilt = Quaternion.Euler(ThresholdAngle(euler.x), ThresholdAngle(euler.z), ThresholdAngle(euler.y)); // Not a typo, need to reinterpret gyroscope
 
@@ -115,14 +119,10 @@ public class Gyro : MonoBehaviour
 
     public void ResetGyro()
     {
-        Input.gyro.enabled = true; // Might be unnecessary
-        _gyroNeutral = Input.gyro.attitude;
+        Input.gyro.enabled = SystemInfo.supportsGyroscope;
+        _gyroNeutral = (SystemInfo.supportsGyroscope && !_virtualOverride) ? Input.gyro.attitude : VirtualTilt;
         Physics.gravity = _gravityNeutral;
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        _gyroNeutral = (SystemInfo.supportsGyroscope && !_virtualOverride) ? Input.gyro.attitude : VirtualTilt;
-#endif
-        
         OnGyroReset?.Invoke();
     }
 
