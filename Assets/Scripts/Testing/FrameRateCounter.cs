@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FrameRateCounter : MonoBehaviour
 {
-
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 	[SerializeField] private float _refreshRate = 1f;
-	
+	[SerializeField] private int _maximumFrameRate = 30;
 	private float _frameRate;
 	private float _time;
 	private int _frames;
@@ -20,6 +20,7 @@ public class FrameRateCounter : MonoBehaviour
 	
 	void Awake()
 	{
+		Application.targetFrameRate = _maximumFrameRate;
 		_frameRate = 0f;
 		_time = 0f;
 		_frames = 0;
@@ -56,4 +57,10 @@ public class FrameRateCounter : MonoBehaviour
 	{
 		return (count * currentAvg + datum) / (count + 1);
 	}
+#else
+	private void Awake() {
+		Destroy(this);
+	}
+#endif
+	
 }
