@@ -12,8 +12,6 @@ public class Goal : MonoBehaviour {
 	{
 		if (other.gameObject.CompareTag("Player"))
 		{
-			Debug.Log("You're a winner!");
-
 			OnGoal?.Invoke();
 		}
 	}

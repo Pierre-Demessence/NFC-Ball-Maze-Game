@@ -6,6 +6,7 @@ public class RemoveOniOS : MonoBehaviour {
 	public void Awake ()
 	{
 		Delete();
+		Destroy(this);
 	}
 	
 	[Conditional("UNITY_IOS")]
