@@ -72,8 +72,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4743408702216066}
   - component: {fileID: 65084160060170372}
-  - component: {fileID: 114861052701550970}
   - component: {fileID: 82109111787543730}
+  - component: {fileID: 114724005855772658}
   m_Layer: 9
   m_Name: Goal
   m_TagString: Untagged
@@ -356,9 +356,9 @@ MonoBehaviour:
   - Player
   _enterLayer: 9
   _exitLayer: 0
---- !u!114 &114861052701550970
+--- !u!114 &114724005855772658
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1732210752652670}
