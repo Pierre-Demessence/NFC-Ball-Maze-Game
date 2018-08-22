@@ -4,22 +4,21 @@ using UnityEngine;
 
 public class Bumper : MonoBehaviour {
 
-    public float BumperForce;
+    [SerializeField] private float _bumpForce;
 
-	void Start () {
-		
-	}
-	
-	void Update () {
-	    	
-	}
+    private Animator _anim;
+    private AudioSource _sound;
 
-    private void OnCollisionEnter(Collision collision)
+    private void Start()
     {
-        Vector3 force = transform.position - collision.gameObject.transform.position;
-        force *= -BumperForce;
-        force.y = 0;
-        collision.gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
-        Debug.Log("Bump, " + collision.gameObject.name + ", " + force);
+        _anim = GetComponent<Animator>();
+        _sound = GetComponent<AudioSource>();
+
+    }
+    private void OnCollisionEnter(Collision other)
+    {
+        _anim.SetTrigger("Hit");
+        _sound.Play();
+        other.gameObject.GetComponent<Rigidbody>().AddForce(-_bumpForce * other.contacts[0].normal, ForceMode.Impulse);
     }
 }
