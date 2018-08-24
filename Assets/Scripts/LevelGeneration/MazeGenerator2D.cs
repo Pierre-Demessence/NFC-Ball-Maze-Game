@@ -25,13 +25,15 @@ namespace LevelGeneration
 
             var curr = _unvisitedCells.Values.First();
             var prev = new CellData2D(new Vector2Int(-1, -1));
-            Random rand = new Random();
 
             while (_unvisitedCells.Count > 0)
             {
                 _unvisitedCells.Remove(curr.Position);
                 _visitedCells.Add(curr.Position, curr);
 
+                if (curr.Position.x == 0) curr.WestWall = false;
+                if (curr.Position.y == 0) curr.SouthWall = false;
+                
                 if (prev.Position != new Vector2Int(-1, -1))
                 {
                     curr.RemoveWall(prev.Position);
@@ -47,14 +49,13 @@ namespace LevelGeneration
                 else if (_unvisitedCells.Count > 0)
                 {
                     var unvisitedCell = _unvisitedCells.Values.First();
-
                     prev = _visitedCells[GetRandomVisitedNeighbour(unvisitedCell.Position)];
                     prev.RemoveWall(unvisitedCell.Position);
                     curr = unvisitedCell;
                 }
             }
 
-            return new Level2D {Data = _visitedCells};
+            return new Level2D {Data = _visitedCells, Size = new Vector2Int(_width, _height)};
         }
 
         private void Initialize()
@@ -119,7 +120,7 @@ namespace LevelGeneration
         {
             foreach (Vector2Int neighbour in GetNeighbours(position))
             {
-                return _unvisitedCells.ContainsKey(neighbour);
+                if (_unvisitedCells.ContainsKey(neighbour)) return true;
             }
 
             return false;

@@ -1,14 +1,15 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
+using Utilities;
 
 namespace LevelGeneration
 {
     public class LevelGenerator : MonoBehaviour
     {
         [SerializeField] private int _width, _height;
-        private Level2D _currentMaze;
+        [SerializeField] private Level2D _currentMaze;
         private bool _autoPreview;
-        
+
         [Button("Generate Maze")]
         private void Generate()
         {
@@ -19,7 +20,8 @@ namespace LevelGeneration
         [Button("Preview Maze")]
         private void Preview()
         {
-            
+            LevelMeshGenerator2D gen = gameObject.GetOrAddComponent<LevelMeshGenerator2D>();
+            gen.Render(_currentMaze);
         }
     }
 }

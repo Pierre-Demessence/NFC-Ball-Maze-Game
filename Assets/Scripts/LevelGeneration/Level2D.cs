@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LevelGeneration.Interfaces;
 using UnityEngine;
 
 namespace LevelGeneration
 {
+    [Serializable]
     public class Level2D : ILevel
     {
         public Vector2Int Size;
