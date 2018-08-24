@@ -55,7 +55,6 @@ GameObject:
   - component: {fileID: 4331822469434630}
   - component: {fileID: 33261819274198400}
   - component: {fileID: 23924500448592594}
-  - component: {fileID: 114624886910248250}
   - component: {fileID: 64527172735440616}
   m_Layer: 10
   m_Name: GoalHole
@@ -187,7 +186,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 26cc093b613e5e943b6cbdc9cfbec16d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -342,18 +341,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114624886910248250
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1633299310543278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec577a5e10b1794b83c0d6ded77015f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _modifier: -2
 --- !u!114 &114677522458862154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -385,6 +372,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 82109111787543730}
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: ShowWinScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
