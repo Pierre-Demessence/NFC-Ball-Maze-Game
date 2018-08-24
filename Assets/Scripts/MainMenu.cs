@@ -40,7 +40,7 @@ public class MainMenu : MonoBehaviour
 
 	public void MenuGoPlay()
 	{
-		SceneManager.LoadScene("Game");
+		SceneManager.LoadScene(1);
 	}
 
 	public void MenuGoSettings()
