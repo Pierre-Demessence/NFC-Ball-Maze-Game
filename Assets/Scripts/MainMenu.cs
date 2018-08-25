@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour
 	public static float SoundVolume => _volumeSound * _volumeGlobal;
 	
 	[SerializeField] private AudioSource _music;
+	private AsyncOperation _asyncOperationSceneLoad;
 
 	private void Awake()
 	{
@@ -36,11 +37,13 @@ public class MainMenu : MonoBehaviour
 		_sliderVolumeGlobal.value = _volumeGlobal;
 		_sliderVolumeMusic.value = _volumeMusic;
 		_sliderVolumeSound.value = _volumeSound;
+		_asyncOperationSceneLoad = SceneManager.LoadSceneAsync("Loading");
+		_asyncOperationSceneLoad.allowSceneActivation = false;
 	}
 
 	public void MenuGoPlay()
 	{
-		SceneManager.LoadScene("Game");
+		_asyncOperationSceneLoad.allowSceneActivation = true;
 	}
 
 	public void MenuGoSettings()
