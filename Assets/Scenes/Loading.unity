@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 99100034}
   - component: {fileID: 99100033}
   m_Layer: 5
-  m_Name: Text
+  m_Name: LoadingMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -877,9 +877,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c854b6aab3d29438d69899cd1f0dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _touchToFinish: 1
+  _loadingMessage: {fileID: 99100033}
   _progressBar: {fileID: 1001402813}
-  _text: {fileID: 99100033}
+  _touchToFinish: 1
 --- !u!4 &1768500674
 Transform:
   m_ObjectHideFlags: 0
